@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -12,6 +12,16 @@ const [checked, setChecked] = useState(false)
  const handleEdit = () => {
  
   };
+
+  useEffect(() => {
+    let todos = JSON.parse(localStorage.getItem("todos"))
+    setTodos(todos)
+  }, [])
+  
+
+  const saveToLs =() =>{
+    localStorage.setItem("todos", JSON.stringify(todos))
+  }
 
 const handleChange = (e)=>{
   setTodo(e.target.value)
@@ -29,6 +39,8 @@ const handleChange = (e)=>{
    newTodos[index].isCompleted = !newTodos[index].isCompleted;
    setTodos(newTodos)
 
+   saveToLs()
+
   };
 
   const handleDelete = (e, id)=>{
@@ -37,13 +49,16 @@ const handleChange = (e)=>{
     return item.id!==id
    });
    
-   setTodos(newTodos)
+   setTodos(newTodos);
+    saveToLs();
 
   };
 
    const handleAdd = ()=>{
 setTodos([...todos, {id: uuidv4(), todo, isCompleted: false}]);
+saveToLs()
 setTodo("");
+ 
   };
 
   return (
